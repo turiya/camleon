@@ -14,10 +14,10 @@ let () =
   let a = Array1.create float64 c_layout n in
   let () =
     for i = 0 to n - 1 do
-      a.{i} <- (cos ((float_of_int i) *. 0.5))
+      a.{i} <- (cos ((float_of_int i) *. 0.5 *. pi *. 2.)) +. (cos ((float_of_int i) *. 0.25 *. pi *. 2.))
     done in
   let fa = fft a in
-    for i = 0 to n - 1 do
-      printf "%f, %f\n" (1. /. float_of_int i) (abs_float fa.{i})
+    for i = 0 to (n - 1) do
+      printf "%f, %f\n" (float_of_int i /. float_of_int n) (abs_float fa.{i})
 			(*printf "%i, %f\n" i a.{i}*)
     done;
