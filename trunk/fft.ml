@@ -25,19 +25,20 @@ let generate_sinusoid_sample a freq i =
 
 (* return the index of the spectral bucket that sample i would
 	fall into  when the total number of buckets is n *)
-let b i n = 
-	int_of_float (floor (sqrt ((float_of_int i) *. (float_of_int n))));;
+let which_bucket i n = 
+  int_of_float (floor (float_of_int i /. float_of_int n));;
+	(*int_of_float (floor (sqrt ((float_of_int i) *. (float_of_int n))));;*)
 	
 let rec freq_bucket linear_spectrum i n =
-	let j = b i n in
-	if j != b (i+1) n then
-		linear_spectrum.{j}
+	let b = which_bucket i n in
+	if b != which_bucket (i+1) n then
+		linear_spectrum.{b}
 	else
-		linear_spectrum.{j} +. abs_float (freq_bucket linear_spectrum (i+1) n);;
+		linear_spectrum.{b} +. abs_float (freq_bucket linear_spectrum (i+1) n);;
 
 let spectralize data spectrum ?(min=0) ?(max=(Array1.dim data)-1) =
   let n = Array1.dim spectrum in
-  let linear_spectrum = Array1.sub (fft data) min (max - min) in
+  let linear_spectrum = fft data in(*Array1.sub (fa) min (max - min) in*)
 	(* now we get logarithmic! *)
   for i = 0 to n - 1 do
     spectrum.{i} <- freq_bucket linear_spectrum i n
@@ -46,7 +47,7 @@ let spectralize data spectrum ?(min=0) ?(max=(Array1.dim data)-1) =
 let print_spectrum spectrum =
 	let n = Array1.dim spectrum in
 	for i = 0 to n - 1 do
-		Printf.printf "%f\t%f\n" ((sampling_rate *. float_of_int i) /. float_of_int n) a.{i};
+		Printf.printf "%f\t%f\n" ((sampling_rate *. float_of_int i) /. float_of_int n) spectrum.{i};
 	done;;
 
 
