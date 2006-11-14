@@ -6,7 +6,7 @@ open List;;
 
 let complex a b = { Complex.re = a; Complex.im = b }
 
-let n = 65536;;
+let n = 8192;;
 let fft = Fftw.r_create Fftw.forward n ~normalize:true;;
 
 
@@ -18,19 +18,38 @@ let convert_to_decibels a =
 let normalize a =
   log a;;
 
-let sampling_rate = 22050.;;
+let sampling_rate = 44100.;;
 
 let generate_sinusoid_sample a freq i =
   a *. (cos (a *. (freq /. sampling_rate) *. (float_of_int i) *. pi *. 2.));;
 
-let spectralize samples spectrum ~sampling_rate ?(min=0) ?(max) =
+(* return the index of the spectral bucket that sample i would
+	fall into  when the total number of buckets is n *)
+let b i n = 
+	int_of_float (floor (sqrt ((float_of_int i) *. (float_of_int n))));;
+	
+let rec freq_bucket linear_spectrum i n =
+	let j = b i n in
+	if j != b (i+1) n then
+		linear_spectrum.{j}
+	else
+		linear_spectrum.{j} +. abs_float (freq_bucket linear_spectrum (i+1) n);;
+
+let spectralize data spectrum ?(min=0) ?(max=(Array1.dim data)-1) =
   let n = Array1.dim spectrum in
-  let fa = fft samples in
+  let linear_spectrum = Array1.sub (fft data) min (max - min) in
+	(* now we get logarithmic! *)
   for i = 0 to n - 1 do
-    
+    spectrum.{i} <- freq_bucket linear_spectrum i n
   done;;
   
-let 
+let print_spectrum spectrum =
+	let n = Array1.dim spectrum in
+	for i = 0 to n - 1 do
+		Printf.printf "%f\t%f\n" ((sampling_rate *. float_of_int i) /. float_of_int n) a.{i};
+	done;;
+
+
   
 let print_tuple (x,y) =
   printf "%f , %f\n" x y;;
@@ -38,7 +57,7 @@ let print_tuple (x,y) =
 let print_data data =
   List.iter print_tuple data;;
 
-let () =
+(*let () =
   let a = Array1.create float64 c_layout n in
   let () =
     for i = 0 to n - 1 do
@@ -47,6 +66,6 @@ let () =
         +. (generate_sinusoid_sample 1. 10000. i)
         +. (generate_sinusoid_sample 1. 20. i)
     done in
-  print_data (spectralize a);
+  print_data (spectralize a);*)
     (*printf "%f, %f\n" ((sampling_rate *. float_of_int i) /. float_of_int n) ((abs_float fa.{i}))*)
     (*printf "%i, %f\n" i a.{i}*)
