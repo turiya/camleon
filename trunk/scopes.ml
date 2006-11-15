@@ -1,11 +1,14 @@
+open Bigarray;;
+
 module Scopes =
 struct
+
 class oscilloscope ?(barsize=80) ?(maxval=32767) () =
 	object (self)
-		val mutable bar = String.create barsize
+		val mutable bar = String.create barsize;;
 		
 		method clear_bar =
-			String.fill bar 0 barsize ' '
+			String.fill bar 0 barsize ' ';;
 
 		method set v =
 			self#clear_bar;
@@ -18,8 +21,18 @@ class oscilloscope ?(barsize=80) ?(maxval=32767) () =
 				with Invalid_argument e -> 
 					String.fill bar 0 barsize '!';
 			end;
-			String.fill bar halfbarsize 1 '|'
+			String.fill bar halfbarsize 1 '|';;
 
-		method bar = bar
+		method bar = bar;;
 	end;;
+
+class spectroscope spectrum ?(minfreq=0.) ?(maxfreq=1.) ?(width=80)=
+	object (self)
+		val spectrum = spectrum;;
+		val display = Array.make (Array1.dim spectrum) (String.create (width + 7));;
+
+		method update = 
+			for i = 0 to Array.dim 
+			
+
 end;;
