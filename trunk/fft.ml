@@ -24,12 +24,14 @@ let generate_sinusoid_sample a freq i =
   a *. (cos (a *. (freq /. sampling_rate) *. (float_of_int i) *. pi *. 2.));;
 
 (* return the index of the spectral bucket that sample i would
-	fall into  when the total number of buckets is n *)
-let which_bucket i n = 
-  int_of_float (floor (float_of_int i /. float_of_int n));;
+	fall into  when the total number of buckets is n and the total
+	number of samples is s *)
+let which_bucket i s n = 
+  ((floor (float_of_int i /. float_of_int n) *. (s /. n)) ;;
 	(*int_of_float (floor (sqrt ((float_of_int i) *. (float_of_int n))));;*)
 	
 let rec freq_bucket linear_spectrum i n =
+	let s = Array1.dim linear_spectrum in
 	let b = which_bucket i n in
 	if b != which_bucket (i+1) n then
 		linear_spectrum.{b}
