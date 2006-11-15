@@ -30,6 +30,12 @@ let round f =
 	else
 		int_of_float (floor f);;
 
+let index_of_frequency freq sampling_rate n =
+  int_of_float (floor ((freq *. (float_of_int n)) /. sampling_rate));;
+
+let frequency_of_index i sampling_rate n =
+  ((sampling_rate *. float_of_int i) /. float_of_int n);;
+
 (* return the index of the spectral bucket that sample i would
 	fall into  when the total number of buckets is n and the total
 	number of samples is s *)
@@ -52,18 +58,19 @@ let rec bucketize spectrum buckets =
 let clear_buckets buckets =
 	for i = 0 to (Array1.dim buckets) - 1 do buckets.{i} <- 0. done;;
 
-let spectralize data ?(min=0) ?(max=(Array1.dim data)-1) buckets =
+let spectralize data ?(min=18.) ?(max=20000.) buckets =
 	clear_buckets buckets;
   let n = Array1.dim buckets in
-  let spectrum = fft data in(*Array1.sub (fa) min (max - min) in*)
-	Printf.printf "spectrum has %n buckets\n" n;
-	(* now we get logarithmic! *)
+  let fa = fft data in
+  let s = Array1.dim fa in
+  let spectrum = Array1.sub (fft data) (index_of_frequency min sampling_rate s) 
+    ((index_of_frequency max sampling_rate s) - (index_of_frequency min sampling_rate s)) in
   bucketize spectrum buckets;;
   
-let print_spectrum spectrum =
+let print_spectrum ?(min=18.) ?(max=20000.) buckets =
 	let n = Array1.dim spectrum in
 	for i = 0 to n - 1 do
-		Printf.printf "%f\t%f\n" ((sampling_rate *. float_of_int i) /. float_of_int n) spectrum.{i};
+		Printf.printf "%f\t%f\n" (frequency_of_index i sampling_rate n ~min:min ~max:max) spectrum.{i};
 	done;;
   
 (*let () =
