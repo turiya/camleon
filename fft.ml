@@ -68,9 +68,9 @@ let spectralize data ?(min=18.) ?(max=20000.) buckets =
   bucketize spectrum buckets;;
   
 let print_spectrum ?(min=18.) ?(max=20000.) buckets =
-	let n = Array1.dim spectrum in
+	let n = Array1.dim buckets in
 	for i = 0 to n - 1 do
-		Printf.printf "%f\t%f\n" (frequency_of_index i sampling_rate n ~min:min ~max:max) spectrum.{i};
+		Printf.printf "%f\t%f\n" (frequency_of_index i sampling_rate n ~min:min ~ax:max) spectrum.{i};
 	done;;
   
 (*let () =
