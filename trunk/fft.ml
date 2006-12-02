@@ -18,9 +18,9 @@ let convert_to_decibels a =
 let normalize a =
   log a;;
 
-let `SamplesPerSecond sr = 44100.;;
+let sr = 44100.;;
 
-let generate_sinusoid_sample a `Hz freq i =
+let generate_sinusoid_sample ~amp:a ~freq:freq ~sample:i =
   a *. (cos (a *. (freq /. sr) *. (float_of_int i) *. pi *. 2.));;
 
 (* rounds a float to the nearest integer *)
@@ -30,37 +30,41 @@ let round f =
 	else
 		int_of_float (floor f);;
 
-let index_of_frequency `Hz freq `SamplesPerSecond sr n =
-  int_of_float (floor ((freq *. (float_of_int n)) /. sr));;
+let spec_of_frequency ~freq:freq ~samples_per_second:sr ~spec_count:sc =
+  int_of_float (floor ((freq *. (float_of_int sc)) /. sr));;
 
-let frequency_of_index `SampleIndex i `SamplesPerSecond sr n =
-  ((sr *. float_of_int i) /. float_of_int n);;
+let frequency_of_spec ~spec:i ~samples_per_second:sr ~spec_count:sc =
+  ((sr *. float_of_int i) /. float_of_int sc);;
 
 (* return the index of the spectral bucket that sample i would
-	fall into  when the total number of buckets is n and the total
-	number of samples is s *)
-let bucket_of_index `SampleCount s `BucketCount n `SampleIndex i = 
+	fall into  when the total number of buckets is bc and the total
+	number of samples is sc *)
+let bucket_of_spec ~spec_count:sc ~bucket_count:bc ~spec:i = 
 	let i = float_of_int i in
-	let s = float_of_int s in
-	let n = float_of_int n in
-  `BucketIndex int_of_float ((floor ((i *. n) /. s)));;
+	let sc = float_of_int sc in
+	let bc = float_of_int bc in
+  int_of_float (floor ((i *. bc) /. sc));;
 	(*int_of_float (floor (sqrt ((float_of_int i) *. (float_of_int n))));;*)
 
-let index_of_bucket `SampleCount s `BucketCount n `BucketIndex b =
+let spec_of_bucket ?(min_spec=0) ~spec_count:sc ?(max_spec=sc) ~bucket_count:bc ~bucket:b =
   let b = float_of_int b in
-  let s = float_of_int s in
-  let n = float_of_int n in
-  `SampleIndex int_of_float ((floor ((b *. s) /. n)));;
+  let sc = float_of_int sc in
+  let bc = float_of_int bc in
+  min_spec + (int_of_float (floor ((b *. sc) /. bc)));;
 
-let frequency_of_bucket `SampleCount s `BucketCount n `BucketIndex b `SamplesPerSecond sr =
-  `Hz frequency_of_index (index_of_bucket s n b) sr n;;
+let frequency_of_bucket ?(min=18.) ?(max=20000.) ~spec_count:sc ~bucket_count:bc ~bucket:b ~samples_per_second:sr =
+	let min_spec = spec_of_frequency ~freq:min ~samples_per_second:sr, ~spec_count:sc in
+	let max_spec = spec_of_frequency ~freq:max ~samples_per_second:sr, ~spec_count:sc in
+  frequency_of_spec ~spec:(spec_of_bucket ~spec_count:sc ~bucket_count:bc ~bucket:b ~min_spec:min_spec ~max_spec:max_spec) 
+										~samples_per_second:sr 
+										~spec_count:sc;;
 	
 let rec bucketize spectrum buckets =
-	let n = `BucketCount Array1.dim buckets in
-	let s = `SampleCount Array1.dim spectrum in
-	let buck = bucket_of_index s n in
+	let n = (Array1.dim buckets) in
+	let s = (Array1floa.dim spectrum) in
+	let buck = bucket_of_spec ~spec_count:s ~bucket_count:n in
 	for i = 0 to s - 1 do
-		let b = buck i in
+		let b = buck ~spec:i in
 		buckets.{b} <- buckets.{b} +. abs_float spectrum.{i}
 	done;;
 
@@ -72,14 +76,14 @@ let spectralize data ?(min=18.) ?(max=20000.) buckets =
   let n = Array1.dim buckets in
   let fa = fft data in
   let s = Array1.dim fa in
-  let spectrum = Array1.sub (fft data) (index_of_frequency min sampling_rate s) 
-    ((index_of_frequency max sampling_rate s) - (index_of_frequency min sampling_rate s)) in
+  let spectrum = Array1.sub (fft data) (spec_of_frequency ~freq:min ~samples_per_second:sr ~spec_count:s) 
+    ((spec_of_frequency ~freq:max ~samples_per_second:sr ~spec_count:s) - (spec_of_frequency ~freq:min ~samples_per_second:sr ~spec_count:s)) in
   bucketize spectrum buckets;;
   
-let print_spectrum ?(min=18.) ?(max=20000.) buckets s =
+let print_spectrum ?(min=18.) ?(max=20000.) buckets ~spec_count:s =
 	let n = Array1.dim buckets in
 	for b = 0 to n - 1 do
-		Printf.printf "%f\t%f\n" (frequency_of_bucket s b n sampling_rate n ~min:min ~ax:max) spectrum.{i};
+		Printf.printf "%f\t%f\n" (frequency_of_bucket ~spec_count:s ~bucket:b ~bucket_count:n ~samples_per_second:sr) buckets.{b};
 	done;;
   
 (*let () =
