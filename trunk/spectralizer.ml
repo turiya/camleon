@@ -5,7 +5,7 @@ open Fftw;;
 module Analysis =
 struct
 
-class spectralizer ?(min_freq=20.) ?(max_freq=18000.) ?(bands=32) ?(samples_per_second=44100) data =
+class spectralizer ?(logarithmic=true) ?(min_freq=20.) ?(max_freq=18000.) ?(bands=32) ?(samples_per_second=44100) data =
 	object (self)
 		val sr = float_of_int samples_per_second (* samples_per_second (i.e. the sampling rate), as a flaot, for convenience *)
 
@@ -27,6 +27,16 @@ class spectralizer ?(min_freq=20.) ?(max_freq=18000.) ?(bands=32) ?(samples_per_
 
 		initializer self#map_buckets
 
+		method bucket_to_frequency_mapper i =
+			if logarithmic then self#logarithmic_bucket_to_frequency_mapper i else self#linear_bucket_to_frequency_mapper i
+
+		method logarithmic_bucket_to_frequency_mapper i =
+				(* this is a simplified version of the more general formula: 
+					(bands^(curve-1)floor(i))^(1/curve) * ((max_freq - min_freq) / bands) + min_freq *)
+				(float_of_int (i * i)) *. ((max_freq -. min_freq) /. (float_of_int (bands * bands))) +. min_freq
+
+		method linear_bucket_to_frequency_mapper i =
+				((float_of_int i) *. ((max_freq -. min_freq) /. (float_of_int bands))) +. min_freq
 		
 		(* the frequency in Hz represented by the discrete frequency component -- the "spec" -- at index i *)
 		method frequency_of_spec i =
@@ -38,9 +48,8 @@ class spectralizer ?(min_freq=20.) ?(max_freq=18000.) ?(bands=32) ?(samples_per_
 
 		(* the minimum frequency represented by the bucket at the given index *)
 		method frequency_of_bucket i =
-			let i = float_of_int i in
-			let bands = float_of_int bands in
-			(i *. ((max_freq -. min_freq) /. bands)) +. min_freq 
+			let f = self#bucket_to_frequency_mapper in
+			f i
 
 		(* searches the bucket_to_freq_map for the index of the bucket that represents the given frequency *)
 		method bucket_of_frequency ?(i=bands-1) freq =
@@ -76,6 +85,10 @@ class spectralizer ?(min_freq=20.) ?(max_freq=18000.) ?(bands=32) ?(samples_per_
 				buckets.{b} <- buckets.{b} +. (abs_float specs.{i})
 			done
 
+		method bucket_to_freq_map = bucket_to_freq_map
+
+		method buckets = buckets
+
 		method print_bucket_to_freq_map =
 			for i = 0 to bands - 1 do
 				Printf.printf "%i\t%f\n" (i) (bucket_to_freq_map.(i))
@@ -85,6 +98,12 @@ class spectralizer ?(min_freq=20.) ?(max_freq=18000.) ?(bands=32) ?(samples_per_
 			for i = 0 to bands - 1 do
 				Printf.printf "%f\t%f\n" (self#frequency_of_bucket i) buckets.{i}
 			done
+
+		method spectrum_as_tuples ?(i=0) () =
+			if i < Array.length bucket_to_freq_map then
+				(bucket_to_freq_map.(i), buckets.{i}) :: self#spectrum_as_tuples ~i:(i+1) ()
+			else []
+				
 
 	end;;
 end;;
