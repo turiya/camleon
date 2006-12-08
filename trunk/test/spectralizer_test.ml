@@ -14,7 +14,7 @@ let frequencies = [30.;800.;2000.;12000.]
 
 let synth = new Synth.synthesizer ~samples_per_second:sr ()
 let spect_factory = new Analysis.spectralizer ~min_freq:min_freq ~max_freq:max_freq ~bands:bands
-let data = synth#generate_sinusoid_samples ~n:samples frequencies
+let data = synth#generate_sinusoid_samples frequencies
 let spect = spect_factory data
 
 let cmp_float_abs ?(delta=1e-16) a b =
