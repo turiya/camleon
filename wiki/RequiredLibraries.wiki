@@ -5,7 +5,7 @@ In addition to the standard OCaml distribution, camleon needs:
   # OCaml bindings for the fftw library: http://math.umh.ac.be/an/software.php
   # OCaml OpenGL bindings (lablglut): http://redwood.ucdavis.edu/~issac/software/
 
-You will also need findlib to make installing the above libraries easier (it provides ocamlfind, which installation scripts use). The findlib package is a bit hard to track down, but you can try here: http://funlinks.camlcity.org/frames.html
+You will also need *findlib* to make installing the above libraries easier (it provides *ocamlfind*, which installation scripts use). The findlib package is a bit hard to track down, but you can try here: http://funlinks.camlcity.org/frames.html
 
 = FFTW =
 
@@ -15,7 +15,7 @@ You'll need the fftw headers package for your distro (probably fftw-dev or fftw-
 
 === SUSE notes ===
 
-In the ocaml fftw Makefile, change:
+In the ocaml fftw *Makefile*, change:
 
 {{{OCAMLH=$(shell ocamlc -where)/caml}}}
 
