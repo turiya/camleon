@@ -15,22 +15,17 @@ You'll need the fftw headers package for your distro (probably fftw-dev or fftw-
 
 === SUSE notes ===
 
-In the ocaml fftw *Makefile*, change:
+In the ocaml fftw *Makefile*, make the following changes:
 
-{{{OCAMLH=$(shell ocamlc -where)/caml}}}
+{{{OCAMLH=$(shell ocamlc -where)/caml}}} *===>* {{{OCAMLH=$(shell ocamlc -where)}}}
 
-to:
+{{{INCLUDE_FFTW = /usr/include/fftw}}} *===>*  {{{INCLUDE_FFTW = /usr/include/}}}
 
-{{{OCAMLH=$(shell ocamlc -where)}}}
-
-And change:
-
-{{{INCLUDE_FFTW = /usr/include/fftw}}}
-
-to:
-
-{{{INCLUDE_FFTW = /usr/include/}}}
+all occurances of {{{-lfftw}}} *===>* {{{-ldfftw}}}
 
 = Lablglut =
 
 _To come..._
+
+
+
