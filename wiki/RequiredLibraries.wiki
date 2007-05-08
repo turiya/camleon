@@ -22,10 +22,10 @@ In the ocaml fftw *Makefile*, make the following changes:
 {{{INCLUDE_FFTW = /usr/include/fftw}}} *===>*  {{{INCLUDE_FFTW = /usr/include/}}}
 
 all occurances of {{{-lfftw}}} *===>* {{{-ldfftw}}}
+all occurances of {{{-lrfftw}}} *===>* {{{-ldrfftw}}}
 
 = Lablglut =
 
 _To come..._
-
 
 
