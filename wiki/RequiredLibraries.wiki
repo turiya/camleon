@@ -13,7 +13,7 @@ The OCaml bindings for fftw -- the fast fourier transform library -- currently w
 
 You'll need the fftw headers package for your distro (probably fftw-dev or fftw-devel) to compile the ocaml bindings.
 
-=== SUSE notes ===
+=== SUSE notes (these might apply to RedHate-based distros too) ===
 
 In the ocaml fftw *Makefile*, make the following changes:
 
