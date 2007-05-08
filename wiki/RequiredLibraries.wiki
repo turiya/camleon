@@ -1,0 +1,16 @@
+#Discussion of what needs to be installed to get going with camleon
+
+In addition to the standard OCaml distribution, camleon needs:
+
+  # OCaml bindings for the fftw library: http://math.umh.ac.be/an/software.php
+  # OCaml OpenGL bindings (lablglut): http://redwood.ucdavis.edu/~issac/software/
+
+= FFTW =
+
+The OCaml bindings for fftw -- the fast fourier transform library -- currently work with fftw version 2. A version for fftw3 is in the works, but camleon currently works with the old version 2.
+
+You'll need the fftw headers package for your distro (probably fftw-dev or fftw-devel) to compile the ocaml bindings.
+
+= Lablglut =
+
+_To come..._
