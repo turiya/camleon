@@ -11,6 +11,24 @@ The OCaml bindings for fftw -- the fast fourier transform library -- currently w
 
 You'll need the fftw headers package for your distro (probably fftw-dev or fftw-devel) to compile the ocaml bindings.
 
+=== SuSE ===
+
+In the ocaml fftw Makefile, change:
+
+{{{OCAMLH=$(shell ocamlc -where)/caml}}}
+
+to:
+
+{{{OCAMLH=$(shell ocamlc -where)}}}
+
+And change:
+
+{{{INCLUDE_FFTW = /usr/include/fftw}}}
+
+to:
+
+{{{INCLUDE_FFTW = /usr/include/}}}
+
 = Lablglut =
 
 _To come..._
