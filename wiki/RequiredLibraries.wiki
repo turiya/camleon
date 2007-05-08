@@ -25,7 +25,11 @@ all occurances of {{{-lfftw}}} *===>* {{{-ldfftw}}}
 
 all occurances of {{{-lrfftw}}} *===>* {{{-ldrfftw}}}
 
+Also, after compiling and installing, if you want to run {{{make test}}} to ensure that the fftw stuff was installed correctly and you have a 32-bit system, you'll have to make the following change in *test.ml*:
+
+all occurrances of {{{float64}}} *===>* {{{float32}}}
+
+
 = Lablglut =
 
 _To come..._
-
