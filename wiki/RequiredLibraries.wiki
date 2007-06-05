@@ -36,4 +36,4 @@ all occurrances of {{{float64}}} *===>* {{{float32}}}
   # {{{make glut}}}
   # {{{sudo make install}}}
 
-If everything went well, you should now be able to run *lablglut* (it should be in /usr/bin or /usr/local/bin).
+To test that everything went well, try running *lablglut* (it should be in /usr/bin or /usr/local/bin). Running this should put you in an interactive OCaml prompt.
