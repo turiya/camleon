@@ -1,5 +1,5 @@
+#summary Information and installation notes for required libraries.
 #labels Phase-Deploy
-# Information and installation notes for required libraries.
 
 In addition to the standard OCaml distribution, camleon needs:
 
