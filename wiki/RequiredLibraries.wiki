@@ -2,7 +2,7 @@
 In addition to the standard OCaml distribution, camleon needs:
 
   # OCaml bindings for the fftw library: http://math.umh.ac.be/an/software.php
-  # OCaml OpenGL bindings (lablglut): http://redwood.ucdavis.edu/~issac/software/
+  # OCaml OpenGL bindings (LablGL): http://wwwfun.kurims.kyoto-u.ac.jp/soft/lsl/lablgl.html
 
 You will also need *findlib* to make installing the above libraries easier (it provides *ocamlfind*, which installation scripts use). The findlib package is a bit hard to track down, but you can try here: http://funlinks.camlcity.org/frames.html
 
@@ -29,6 +29,11 @@ Also, after compiling and installing, if you want to run {{{make test}}} to ensu
 all occurrances of {{{float64}}} *===>* {{{float32}}}
 
 
-= Lablglut =
+= LablGL =
 
-_To come..._
+  # Download the latest LablGL library (for example, lablgl-1.02.tar.gz), untar it, and cd into the directory.
+  # On Linux, copy Makefile.config.linux.mdk to Makefile.config. See the LablGL README for other platforms as well as detailed config instructions. Make sure you have glut/Mesa installed along with the devel headers package for your distro.
+  # {{{make glut}}}
+  # {{{sudo make install}}}
+
+If everything went well, you should now be able to run /usr/bin/lablglut (or /usr/local/bin/lablglut).
