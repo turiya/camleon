@@ -1,4 +1,6 @@
 #labels Phase-Deploy
+# Information and installation notes for required libraries.
+
 In addition to the standard OCaml distribution, camleon needs:
 
   # OCaml bindings for the fftw library: http://math.umh.ac.be/an/software.php
