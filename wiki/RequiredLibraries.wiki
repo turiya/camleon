@@ -10,7 +10,7 @@ You will also need *findlib* to make installing the above libraries easier (it p
 
 The OCaml bindings for fftw -- the fast fourier transform library -- currently work with fftw version 2. A version of the bindings for fftw3 is in development, but camleon currently works with the old version 2.
 
-You'll need the fftw headers package for your distro (probably fftw-dev or fftw-devel) to compile the ocaml bindings.
+You'll need the fftw headers package for your distro (probably fftw-dev or fftw-devel) to compile the ocaml fftw bindings.
 
 === SUSE notes (these might apply to Red Hat-based distros too) ===
 
