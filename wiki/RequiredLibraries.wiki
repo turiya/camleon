@@ -32,8 +32,8 @@ all occurrances of {{{float64}}} *===>* {{{float32}}}
 = LablGL =
 
   # Download the latest LablGL library (for example, lablgl-1.02.tar.gz), untar it, and cd into the directory.
-  # On Linux, copy Makefile.config.linux.mdk to Makefile.config. See the LablGL README for other platforms as well as detailed config instructions. Make sure you have glut/Mesa installed along with the devel headers package for your distro.
+  # On Linux, copy *Makefile.config.linux.mdk* to *Makefile.config*. See the LablGL *README* for other platforms as well as detailed config instructions. Make sure you have glut/Mesa installed along with the devel headers package for your distro.
   # {{{make glut}}}
   # {{{sudo make install}}}
 
-If everything went well, you should now be able to run /usr/bin/lablglut (or /usr/local/bin/lablglut).
+If everything went well, you should now be able to run *lablglut* (it should be in /usr/bin or /usr/local/bin).
