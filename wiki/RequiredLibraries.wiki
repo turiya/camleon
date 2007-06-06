@@ -39,7 +39,7 @@ ocamlmktop -I /usr/lib/ocaml/fftw2 fftw2.cma -o ocaml-fftw
 Then run:
 
 {{{
-chmod +x ocamlt-fftw
+chmod +x ocaml-fftw
 ./ocaml-fftw -I /usr/lib/ocaml/fftw2 test.ml
 }}}
 
@@ -51,3 +51,4 @@ chmod +x ocamlt-fftw
   # {{{sudo make install}}}
 
 To test that everything went well, try running *lablglut* (it should be in /usr/bin or /usr/local/bin). Running this should put you in an interactive OCaml prompt.
+
