@@ -53,8 +53,8 @@ let spec_of_bucket ?(min_spec=0) ~spec_count:sc ?(max_spec=sc) ~bucket_count:bc 
   min_spec + (int_of_float (floor ((b *. sc) /. bc)));;
 
 let frequency_of_bucket ?(min=18.) ?(max=20000.) ~spec_count:sc ~bucket_count:bc ~bucket:b ~samples_per_second:sr =
-	let min_spec = spec_of_frequency ~freq:min ~samples_per_second:sr, ~spec_count:sc in
-	let max_spec = spec_of_frequency ~freq:max ~samples_per_second:sr, ~spec_count:sc in
+	let min_spec = spec_of_frequency ~freq:min ~samples_per_second:sr ~spec_count:sc in
+	let max_spec = spec_of_frequency ~freq:max ~samples_per_second:sr ~spec_count:sc in
   frequency_of_spec ~spec:(spec_of_bucket ~spec_count:sc ~bucket_count:bc ~bucket:b ~min_spec:min_spec ~max_spec:max_spec) 
 										~samples_per_second:sr 
 										~spec_count:sc;;

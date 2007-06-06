@@ -1,4 +1,4 @@
-#use "../synthesizer.ml"
+#use "synthesizer.ml"
 
 open OUnit
 open Synth

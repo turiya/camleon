@@ -1,5 +1,5 @@
-#use "../synthesizer.ml"
-#use "../spectralizer.ml"
+#use "synthesizer.ml"
+#use "spectralizer.ml"
 
 open OUnit
 open Synth
