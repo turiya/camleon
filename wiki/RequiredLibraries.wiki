@@ -46,7 +46,7 @@ chmod +x ocaml-fftw
 = LablGL =
 
   # Make sure you have the mesa libraries and headers installed for your distro (for example, *Mesa* and *Mesa-devel* on SuSE)
-  # Download the latest *LablGL* library (i.e. lablgl-1.02.tar.gz), untar it, and cd into the directory.
+  # Download the latest *LablGL* library (i.e. lablgl-1.02.tar.gz), untar it, and cd into the untarred directory.
   # On Linux, copy *Makefile.config.linux.mdk* to *Makefile.config*. See the LablGL *README* for other platforms as well as detailed config instructions. Make sure you have glut/Mesa installed along with the devel headers package for your distro.
   # {{{make glut}}}
   # {{{sudo make install}}}
