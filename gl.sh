@@ -1,2 +1,5 @@
 #!/bin/bash
-lablglut unix.cma -I /usr/lib/ocaml/threads threads.cma $1
+
+# Convenience script for running in the opengl-enabled environment.
+
+lablglut -I +lablGL -I +threads unix.cma threads.cma $1

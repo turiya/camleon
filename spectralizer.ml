@@ -1,6 +1,6 @@
 open Bigarray;;
 open Printf;;
-open Fftw;;
+module FFT = Fftw2;;
 
 module Analysis =
 struct
@@ -23,7 +23,7 @@ class spectralizer ?(logarithmic=true) ?(min_freq=20.) ?(max_freq=18000.) ?(band
 																											bucket_frequencies.(4) = 80., then buckets.{3} represents the aggregated fft value for 
 																											frequencies between 20 and 80 Hz (>= 20 and < 80) *)
 
-		val fft = Fftw.r_create Fftw.forward (Array1.dim data) ~normalize:true
+		val fft = FFT.r_create FFT.forward (Array1.dim data) ~normalize:true
 
 		initializer self#map_buckets
 
