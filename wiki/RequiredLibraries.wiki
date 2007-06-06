@@ -18,18 +18,30 @@ You'll need the fftw headers package for your distro (probably fftw-dev or fftw-
 
 In the ocaml fftw *Makefile*, make the following changes:
 
-{{{OCAMLH=$(shell ocamlc -where)/caml}}} *===>* {{{OCAMLH=$(shell ocamlc -where)}}}
+`OCAMLH=$(shell ocamlc -where)/caml` *===>* `OCAMLH=$(shell ocamlc -where)`
 
-{{{INCLUDE_FFTW = /usr/include/fftw}}} *===>*  {{{INCLUDE_FFTW = /usr/include/}}}
+`INCLUDE_FFTW = /usr/include/fftw` *===>*  `INCLUDE_FFTW = /usr/include/`
 
-all occurances of {{{-lfftw}}} *===>* {{{-ldfftw}}}
+all occurances of `-lfftw` *===>* `-ldfftw`
 
-all occurances of {{{-lrfftw}}} *===>* {{{-ldrfftw}}}
+all occurances of `-lrfftw` *===>* `-ldrfftw`
 
-Also, after compiling and installing, if you want to run {{{make test}}} to ensure that the fftw stuff was installed correctly and you have a 32-bit system, you'll have to make the following change in *test.ml*:
+Also, after compiling and installing, if you want to run {{{make test}}} to ensure that the fftw stuff was installed correctly and you have a 32-bit system, you _may_ have to make the following change in *test.ml*:
 
-all occurrances of {{{float64}}} *===>* {{{float32}}}
+all occurrances of `float64` *===>* `float32`
 
+To run the `test.ml` file, you'll probably have to compile a toplevel executable like so:
+
+{{{
+ocamlmktop -I /usr/lib/ocaml/fftw2 fftw2.cma -o ocaml-fftw
+}}}
+
+Then run:
+
+{{{
+chmod +x ocamlt-fftw
+./ocaml-fftw -I /usr/lib/ocaml/fftw2 test.ml
+}}}
 
 = LablGL =
 
