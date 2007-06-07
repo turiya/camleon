@@ -27,14 +27,12 @@ class synthesizer ?(samples_per_second=44100) () =
 				for i = 0 to Array1.dim data - 1 do
 					data.{i} <- data.{i} /. m
 				done
-
 			
 		method find_max data =
 			let rec loop data size i m =
 				if i > (size - 1) then m
 				else loop data size (i+1) (max m data.{i}) in
 			loop data (Array1.dim data) 0 0.
-
 				
 	end;;
 end;;
