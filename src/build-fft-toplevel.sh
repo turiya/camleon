@@ -5,4 +5,4 @@
 #
 #   ocaml-fftw -I /usr/lib/ocaml/fftw2 foo.ml
 
-ocamlmktop -o ocaml-fftw -I /usr/lib/ocaml/fftw2 -I /usr/lib/ocaml bigarray.cma fftw2.cma
+ocamlmktop -o ocaml-fftw -I +fftw2 bigarray.cma fftw2.cma
